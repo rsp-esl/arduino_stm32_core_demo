@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
 // Demo STM32 Core Support for Arduino:
-/  - Toggle the LED when pressing push button (use external interrupt)
+// - Toggle the LED when pressing push button (use external interrupt)
 // - Tested with Nucleo F401RE Board
 // Author: Rawat S.
 // Date: 2017-12-28
@@ -39,6 +39,7 @@ void setup() {
 void loop() {
   if ( state_changed ) { // if the button is pressed.
      state_changed = false;
+     digitalWrite( LED_PIN, state ); // update the output
      sprintf( sbuf, "LED state: %d, count: %d", state, cnt );
      Serial.println( sbuf );
      Serial.flush();
