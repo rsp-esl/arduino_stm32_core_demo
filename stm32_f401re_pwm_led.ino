@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
 // Demo STM32 Core Support for Arduino:
-/  - PWM-based LED dimming
+// - PWM-based LED dimming
 // - Tested with Nucleo F401RE Board
 // Author: Rawat S.
 // Date: 2017-12-28
