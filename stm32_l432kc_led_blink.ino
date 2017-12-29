@@ -3,10 +3,10 @@
 // - LED Blink
 // - Tested with Nucleo L432KC Board
 // Author: Rawat S.
-// Date: 2017-12-28
+// Date: 2017-12-29
 ////////////////////////////////////////////////////////////////////////////
 
-#define LED_PIN   PB3  // PB_5 or D13 pin 
+#define LED_PIN   PB3  // PB_3 or D13 pin 
 #define DELAY_MS  100
 
 int state = 0; // used for output (LED)
@@ -21,3 +21,4 @@ void loop() {
   delay( DELAY_MS );   // delay approx. for 100 msec
 }
 ////////////////////////////////////////////////////////////////////////////
+
