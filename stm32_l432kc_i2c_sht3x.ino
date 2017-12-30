@@ -15,15 +15,15 @@
 #include <Wire.h>
 // see: https://github.com/stm32duino/Arduino_Core_STM32/tree/master/libraries/Wire
 
-#define SHT3x_I2C_ADDR   0x44  // SHT3x-DIS (I2C)
+#define SHT3x_I2C_ADDR         0x44  // SHT3x-DIS (I2C)
 #define SHT3x_SOFT_RESET       0x30A2
 // single shot mode, no clock stretching
 #define SHT3x_ACCURACY_HIGH    0x2C06
 #define SHT3x_ACCURACY_MEDIUM  0x2C0D
 #define SHT3x_ACCURACY_LOW     0x2C10
     
-#define SCL_PIN          PB6   // PB_6 or D5 pin
-#define SDA_PIN          PB7   // PB_7 or D4 pin
+#define SCL_PIN      PB6   // PB_6 or D5 pin
+#define SDA_PIN      PB7   // PB_7 or D4 pin
 
 TwoWire i2c( SDA_PIN, SCL_PIN );
 
@@ -32,7 +32,6 @@ uint32_t ts;
 float temp, humid;
 
 // CRC-8, Polynomial: 0x31  x^8 + x^5 + x^4 + 1, Initial value = 0xff
-
 uint8_t CRC8( uint8_t data[], uint8_t len ) {
   uint8_t crc = 0xFF;
   for ( uint8_t i=0; i < len; i++ ) {
@@ -67,20 +66,19 @@ bool sht3x_read_sensor() {
   i2c.write( (SHT3x_ACCURACY_HIGH >> 8) & 0xff );
   i2c.write( SHT3x_ACCURACY_HIGH & 0xff ); 
   i2c.endTransmission();  // Stop I2C transmission
-  delay(50);
+  delay(50); // note: measurement time is about 15 msec
   // Request 6 bytes of data
   i2c.requestFrom( SHT3x_I2C_ADDR, 6 ); // request 6 bytes
   if ( i2c.available() == 6 ) {
-    data[0] = i2c.read(); // temperature Celsius (MSB)
-    data[1] = i2c.read(); // temperature Celsius (LSB)
+    data[0] = i2c.read(); // temperature Celsius (MSB: high byte)
+    data[1] = i2c.read(); // temperature Celsius (LSB: low byte)
     data[2] = i2c.read(); // temperature Celsius CRC
-    data[3] = i2c.read(); // relative humidty (%RH) (MSB)
-    data[4] = i2c.read(); // relative humidty (%RH) (LSB)
+    data[3] = i2c.read(); // relative humidty (%RH) (MSB: high byte)
+    data[4] = i2c.read(); // relative humidty (%RH) (LSB: low byte)
     data[5] = i2c.read(); // relative humidty CRC
   } else {
     return false;
   }
-  
   // check CRC for both values
   if ( CRC8(data,2)==data[2] && CRC8(data+3,2)==data[5] ) {
     uint16_t value;
@@ -94,25 +92,24 @@ bool sht3x_read_sensor() {
 }
 
 void setup() {
-  Serial.begin( 115200 );
-  i2c.begin( );
-  i2c.setClock( 400000 );
-  sht3x_init();
+  Serial.begin( 115200 );  // set serial baudrate to 115200
+  i2c.begin( );            // start the I2C bus
+  i2c.setClock( 400000 );  // set I2C clock frequency to 400kHz
+  sht3x_init();            // initalize the SHT3x-DIS
   ts = millis();
 }
 
-String str;
-
 void loop() {
-  if ( millis() - ts >= 1000 ) {
+  if ( millis() - ts >= 1000 ) { // read sensor every 1000 msec
+    String str;
     ts += 1000;
     if ( sht3x_read_sensor() ) {
       str = "";
-      dtostrf( humid, 4, 2, sbuf );
+      dtostrf( humid, 3, 1, sbuf );
       str += "Humidity: ";
       str += sbuf;
       str += " %RH, ";
-      dtostrf( temp, 4, 2, sbuf );
+      dtostrf( temp, 3, 1, sbuf );
       str += "Temperature: ";
       str += sbuf;
       str += " deg.C";
