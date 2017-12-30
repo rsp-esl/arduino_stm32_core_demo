@@ -30,6 +30,7 @@ TwoWire i2c( SDA_PIN, SCL_PIN );
 char sbuf[64];
 uint32_t ts;
 float temp, humid;
+uint8_t data[6]; 
 
 // CRC-8, Polynomial: 0x31  x^8 + x^5 + x^4 + 1, Initial value = 0xff
 uint8_t CRC8( uint8_t data[], uint8_t len ) {
@@ -59,7 +60,6 @@ void sht3x_init() {
 }
 
 bool sht3x_read_sensor() {
-  uint8_t data[6]; 
   // Start I2C Transmission
   i2c.beginTransmission( SHT3x_I2C_ADDR );
   // Send measurement command
