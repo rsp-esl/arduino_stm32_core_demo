@@ -3,7 +3,7 @@
 //  - Timer-based LED Toggle
 //  - Tested with Nucleo L432KC Board
 // Author: Rawat S.
-// Date: 2017-12-28
+// Date: 2017-12-29
 ////////////////////////////////////////////////////////////////////////////
 
 #define LED_PIN   PB3    // PB_5 or D13 pin 
