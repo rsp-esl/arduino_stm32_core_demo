@@ -25,7 +25,10 @@ void setup() {
   Serial.begin( 115200 );
   Serial.print( F("\n\n\n") );
   Serial.print( F("=================================\n") );
+  sprintf( sbuf, "System clock frequency %d MHz\n", SystemCoreClock/1000000 );
+  Serial.print( sbuf );
   Serial.flush();
+  
   analogReadResolution(12); // use 12-bit ADC resolution (instead of 10bit)
 
   sprintf( sbuf, "A0 = %d, PA0 = %d, PA_0 = %d\n", A0, PA0, PA_0 );
@@ -43,9 +46,13 @@ void setup() {
 }
 
 void loop() {
+  uint32_t ts = micros();
   for ( int i=0; i < ADC_CHANNELS; i++ ) {
      values[i] = analogRead( ADC_PINS[i] ); // value between 0..4095
   }
+  sprintf( sbuf, "Reading analog channels: %lu usec\n", (micros() - ts) );
+  Serial.print( sbuf );
+  
   for ( int i=0; i < ADC_CHANNELS; i++ ) {
      sprintf( sbuf, "A%d=[%04d]", i, values[i]  );
      Serial.print( sbuf );
