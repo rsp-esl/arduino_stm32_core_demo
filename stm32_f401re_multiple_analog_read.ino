@@ -37,13 +37,6 @@ void setup() {
 
   Serial.print( F("=================================\n") );
   Serial.flush();
-  
-  // pinNametoDigitalPin( PB_3 )
-  // analogInputToPinName( A0 )
-  // analogInputToPinName( 0 ) 
-  // analogInputToDigitalPin( A0 )
-  // digitalPinToPinName( D3 )
-  // pinNametoDigitalPin( PB_3 )
 
   delay(5000);
   
