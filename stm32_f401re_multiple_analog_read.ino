@@ -18,12 +18,13 @@ int values[ ADC_CHANNELS ] = {0};
 #ifdef USE_ARDUINO_PINS
  uint8_t ADC_PINS[] = { A0, A1, A2, A3, A4, A5 }; // PA0, PA1, PA4, PB0, PC1, PC0 
 #else
- uint8_t ADC_PINS[] = { PA0, PA1, PA4, PB0, PC1, PC0 };
+ uint8_t ADC_PINS[] = { PA0, PA1, PA4, PB0, PC1, PC0 }; // the same as Arduinp Pins
 #endif
 
 void setup() {
   Serial.begin( 115200 );
   Serial.print( F("\n\n\n") );
+  Serial.print( F("=================================\n") );
   Serial.flush();
   analogReadResolution(12); // use 12-bit ADC resolution (instead of 10bit)
 
